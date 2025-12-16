@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mixed-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mixed
+  template:
+    metadata:
+      labels:
+        app: mixed
+    spec:
+      containers:
+      - name: app
+        image: myrepo/mixed-app:1.0
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mixed-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: mixed
+  ports:
+  - port: 80
+    targetPort: 8080
